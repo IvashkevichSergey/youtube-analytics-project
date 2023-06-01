@@ -20,7 +20,8 @@ class Channel:
         # ссылка на канал
         self.url = f'https://www.youtube.com/channel/{self.id}'
         # количество подписчиков
-        self.subscribers = int(self.channel['items'][0]['statistics']['subscriberCount'])
+        self.subscribers = int(self.channel['items'][0]
+                               ['statistics']['subscriberCount'])
         # количество видео
         self.video_count = self.channel['items'][0]['statistics']['videoCount']
         # общее количество просмотров

@@ -15,9 +15,11 @@ class Video:
         # ссылка на видео
         self.url = f'https://www.youtube.com/watch?v={self.id}'
         # количество просмотров
-        self.video_count = self.get_response()['items'][0]['statistics']['viewCount']
+        self.video_count = int(self.get_response()['items']
+                               [0]['statistics']['viewCount'])
         # количество лайков
-        self.view_count = self.get_response()['items'][0]['statistics']['likeCount']
+        self.view_count = int(self.get_response()['items']
+                              [0]['statistics']['likeCount'])
 
     def get_response(self):
         """
@@ -44,7 +46,3 @@ class PLVideo(Video):
         super().__init__(video_id)
         # id плейлиста
         self.playlist_id = playlist_id
-
-
-
-
