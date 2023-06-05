@@ -19,11 +19,11 @@ class PlayList:
         """
         Метод, возвращающий общую информацию о плейлисте по его id
         """
-        playlist_videos = self.youtube.playlistItems(). \
-            list(playlistId=self.playlist_id,
-                 part='snippet',
-                 maxResults=50,
-                 ).execute()
+        playlist_videos = self.youtube.playlistItems().list(playlistId=
+                                                            self.playlist_id,
+                                                            part='snippet',
+                                                            maxResults=50,
+                                                            ).execute()
 
         return playlist_videos
 
@@ -80,7 +80,7 @@ class PlayList:
 
             # Используем метод view_count класса Video для
             # получения информации о количестве лайков
-            if int(pl_video.view_count) > best_video_likes:
+            if int(pl_video.like_count) > best_video_likes:
                 best_video_url = f'https://youtu.be/{video_id}'
 
         return best_video_url
