@@ -10,16 +10,19 @@ class Video:
         и методом get_response"""
         # id видео
         self.id = video_id
-        # название видео
-        self.title = self.get_response()['items'][0]['snippet']['title']
-        # ссылка на видео
-        self.url = f'https://www.youtube.com/watch?v={self.id}'
-        # количество просмотров
-        self.video_count = int(self.get_response()['items']
-                               [0]['statistics']['viewCount'])
-        # количество лайков
-        self.view_count = int(self.get_response()['items']
-                              [0]['statistics']['likeCount'])
+        try:
+            # название видео
+            self.title = self.get_response()['items'][0]['snippet']['title']
+            # ссылка на видео
+            self.url = f'https://www.youtube.com/watch?v={self.id}'
+            # количество просмотров
+            self.video_count = int(self.get_response()['items']
+                                   [0]['statistics']['viewCount'])
+            # количество лайков
+            self.like_count = int(self.get_response()['items']
+                                  [0]['statistics']['likeCount'])
+        except TypeError:
+            self.title = self.url = self.video_count = self.like_count = None
 
     def get_response(self):
         """
@@ -27,9 +30,12 @@ class Video:
         """
         # Объект для работы с API youtube берём из класса Channel
         youtube = Channel.get_service()
-        return youtube.videos().list(
-                part='snippet,statistics, contentDetails,topicDetails',
-                id=self.id).execute()
+        response = youtube.videos().list(part='snippet,statistics, '
+                                              'contentDetails,topicDetails',
+                                         id=self.id).execute()
+        if not response['items']:
+            return None
+        return response
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о видео"""
@@ -42,6 +48,7 @@ class Video:
 
 class PLVideo(Video):
     """Класс для видео по его id и id его плейлиста"""
+
     def __init__(self, video_id, playlist_id):
         super().__init__(video_id)
         # id плейлиста
